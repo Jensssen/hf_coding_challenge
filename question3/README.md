@@ -54,3 +54,4 @@ Example commands could look like this:
    docker push us-east1-docker.pkg.dev/my-project/my-repo/my-inference-image:latest
 ```
 
+For more detailed information, please have a look at the official documentation [HERE](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling?hl=en).
