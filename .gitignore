@@ -9,4 +9,4 @@ venv
 *.tfstate.*
 
 # .lock files
-#*.lock.*
+*.lock.*
