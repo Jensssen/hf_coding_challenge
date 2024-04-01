@@ -1,2 +1,12 @@
 .idea
 venv
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .lock files
+#*.lock.*
