@@ -2,7 +2,7 @@ locals {
   bucket_name   = "demo-tf-state-5456879"
   table_name    = "demo-tf-state-5456879"
   region        = "us-east-1"
-  ecr_repo_name = "app-repo"
+  ecr_repo_name = "frontend"
 
   hf_demo_cluster_name         = "hf-demo-cluster"
   availability_zones           = ["us-east-1a", "us-east-1b", "us-east-1c"]

@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "demo_app_task" {
     {
       "name": "${var.hf_demo_task_name}",
       "networkMode": "awsvpc",
-      "image": "533267094230.dkr.ecr.us-east-1.amazonaws.com/app-repo:latest",
+      "image": "533267094230.dkr.ecr.us-east-1.amazonaws.com/frontend:latest",
       "essential": true,
       "portMappings": [
         {
@@ -31,20 +31,35 @@ resource "aws_ecs_task_definition" "demo_app_task" {
           "hostPort": ${var.container_port}
         }
       ],
-      "memory": 2048,
-      "cpu": 1024
+      "memory": 1024,
+      "cpu": 512,
+      "linuxParameters": {
+          "initProcessEnabled": true
+      }
     }
   ]
   DEFINITION
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  memory                   = 2048
-  cpu                      = 1024
+  memory                   = 1024
+  cpu                      = 512
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.task_role.arn
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = var.ecs_task_execution_role_name
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+}
+
+resource "aws_iam_role_policy" "task_role_policy" {
+  name        = "SagemakerAccess"
+  policy      = data.aws_iam_policy_document.sagemaker_access.json
+  role = aws_iam_role.task_role.id
+}
+
+resource "aws_iam_role" "task_role" {
+  name = "task_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
@@ -107,6 +122,7 @@ resource "aws_ecs_service" "demo_app_service" {
   task_definition = aws_ecs_task_definition.demo_app_task.arn
   launch_type     = "FARGATE"
   desired_count   = 1
+  enable_execute_command = true
 
   load_balancer {
     target_group_arn = aws_lb_target_group.target_group.arn
