@@ -5,7 +5,7 @@ import gradio as gr
 from dotenv import load_dotenv
 
 from answer_template import fill_answer
-from inference import query_model
+# from inference import query_model
 from seeking_alpah_api import SeekingAlphaAPI
 
 load_dotenv()
@@ -27,11 +27,10 @@ def stock_news_summary(symbol: str, article_count: int) -> str:
     """
     if symbol:
         company_info = sa_api.get_company_info(symbol)
-        company_name = company_info['data'][0]['attributes']['companyName']
-
         article_info = []
 
         if company_info is not None:
+            company_name = company_info['data'][0]['attributes']['companyName']
             latest_news = sa_api.get_latest_news(company_symbol=symbol, number_of_articles=article_count)
         else:
             return f"The company symbol that you have selected ({symbol}) does not seem to exist."
@@ -45,12 +44,12 @@ def stock_news_summary(symbol: str, article_count: int) -> str:
             content = article_attributes["content"]
             cleaned_content = re.sub(r'<[^>]*>', '', content).strip()
 
-            model_response = query_model(
-                query=f"Please summarize the following article in TWO sentences! "
-                      f"The summarization MUST contain the key information about {company_name}. "
-                      f"Article: {cleaned_content}")
+            # model_response = query_model(
+            #     query=f"Please summarize the following article in TWO sentences! "
+            #           f"The summarization MUST contain the key information about {company_name}. "
+            #           f"Article: {cleaned_content}")
 
-            generated_text = model_response[0]["generated_text"]
+            generated_text = cleaned_content  # model_response[0]["generated_text"]
             article_info.append({
                 "title": title,
                 "source": source_url,
