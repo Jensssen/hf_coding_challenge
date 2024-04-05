@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "demo_app_task" {
     {
       "name": "${var.hf_demo_task_name}",
       "networkMode": "awsvpc",
-      "image": "533267094230.dkr.ecr.us-east-1.amazonaws.com/frontend:latest",
+      "image": ${var.ecr_repo_url},
       "essential": true,
       "portMappings": [
         {
