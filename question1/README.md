@@ -19,4 +19,10 @@ The deployment of the application requires 3 steps.
 1. Deploy the model via Amazon SageMaker Jumpstart.
 For this, just open your Sagemaker Domain, click on JumpStart, select the HuggingFace Provider, select the Mistral 7B-instruct model and click on "Deploy" twice. An alternative approach would be to enter the mistral 7B-instruct-v0.2 model page on HuggingFace and click on "Deploy" in the top right corner of the screen and then select "Amazon SageMaker". You can copy the SDK or jumpstart code into a running instance on SageMaker that has a sufficient hardware spec.   
 2. Frontend: Copy the endpoint url from step 1 into `app/src/.env` name the variable `SAGEMAKER_ENDPOINT`. (Also include `SEEKING_ALPHA_API_KEY`, `SEEKING_ALPHA_HOST` and `REGION` here). Then build the docker image by running `docker build -t frontend .` within the app directory. Finally, push the image to the ECR. (Usually, the docker build and push step would be automated via a CICD pipeline, triggering eg. cloud build).
-3. 
+3. Navigate into the terraform directory and run `terraform init` and `terraform apply -auto-approve`. This will create the ECS infrastructure including VPC Subnets, IAM roles, load balancer, task definition ... It will also pull the latest docker image from the ECR. Finally, it outputs the load balancer DNS which can be used to access the application in your browser. 
+
+### Demo
+Here is a short video, demonstrating the application.
+
+[![Demo Video](https://img.youtube.com/vi/-POoUZKWjrM/0.jpg)](https://youtu.be/-POoUZKWjrM)
+ 
