@@ -5,7 +5,7 @@ import gradio as gr
 from dotenv import load_dotenv
 
 from answer_template import fill_answer
-# from inference import query_model
+from inference import query_model
 from seeking_alpah_api import SeekingAlphaAPI
 
 load_dotenv()
@@ -44,12 +44,12 @@ def stock_news_summary(symbol: str, article_count: int) -> str:
             content = article_attributes["content"]
             cleaned_content = re.sub(r'<[^>]*>', '', content).strip()
 
-            # model_response = query_model(
-            #     query=f"Please summarize the following article in TWO sentences! "
-            #           f"The summarization MUST contain the key information about {company_name}. "
-            #           f"Article: {cleaned_content}")
+            model_response = query_model(
+                query=f"Please summarize the following article in TWO sentences! "
+                      f"The summarization MUST contain the key information about {company_name}. "
+                      f"Article: {cleaned_content}")
 
-            generated_text = cleaned_content  # model_response[0]["generated_text"]
+            generated_text = model_response[0]["generated_text"]
             article_info.append({
                 "title": title,
                 "source": source_url,
